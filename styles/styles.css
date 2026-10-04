@@ -242,6 +242,37 @@ body {
   margin-top: 24px;
 }
 
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.history-header h2 {
+  margin: 0;
+}
+
+.clear-history-btn {
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 150ms;
+}
+
+.clear-history-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.clear-history-btn:active {
+  transform: scale(0.90);
+}
+
 .history-list {
   display: flex;
   flex-direction: column;

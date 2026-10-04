@@ -22,6 +22,7 @@ const totalValueElement = document.getElementById('total-value');
 const titheValueElement = document.getElementById('tithe-value');
 const clearBtn = document.getElementById('clear-btn');
 const historyList = document.getElementById('history-list');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
 
 const getSavedData = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -209,6 +210,11 @@ clearBtn.addEventListener('click', () => {
   localStorage.removeItem(STORAGE_KEY);
   renderForm();
   updateSummary();
+});
+
+clearHistoryBtn.addEventListener('click', () => {
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
 });
 
 renderForm();
