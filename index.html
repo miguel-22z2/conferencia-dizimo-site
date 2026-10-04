@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conferência de Dizimo - Santa Luzia</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <div class="title-wrap">
+                <h1>Conferência de Dízimo - Santa Luzia</h1>
+                <p class="subtitle">Digite a quantidade de notas e moedas para calcular o valor do dizimo.</p>
+            </div>
+            <button id="clear-btn" class="clear-btn" type="button">Limpar</button>
+        </header>
+
+        <section class="summary" aria-label="Resumo do valor total">
+            <div class="summary-card total">
+                <small>Valor total</small>
+                <strong id="total-value">R$ 0,00</strong>
+                <button class="copy-btn" type="button" data-copy-target="total-value">Copiar total</button>
+            </div>
+            <div class="summary-card tithe">
+                <small>Dízimo (10%)</small>
+                <strong id="tithe-value">R$ 0,00</strong>
+                <button class="copy-btn" type="button" data-copy-target="tithe-value">Copiar 10%</button>
+            </div>
+        </section>
+
+        <section class="app-grid">
+            <div class="panel">
+                <h2>Notas e moedas</h2>
+                <form id="dizimo-form" class="denomination-groups" aria-label="Formulário de cálculo do dízimo"></form>
+            </div>
+
+            <aside class="side-panel">
+                <div class="info-box">
+                    <h3>Como funciona</h3>
+                    <p>Informe a quantidade de cada nota ou moeda que você tem. O valor total será calculado automaticamente e o dízimo será exibido em 10%.</p>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>
