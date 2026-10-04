@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'dizimoSiteData';
+const HISTORY_KEY = 'dizimoHistory';
 
 const denominations = [
   { label: 'R$ 200', value: 200 },
@@ -20,6 +21,7 @@ const form = document.getElementById('dizimo-form');
 const totalValueElement = document.getElementById('total-value');
 const titheValueElement = document.getElementById('tithe-value');
 const clearBtn = document.getElementById('clear-btn');
+const historyList = document.getElementById('history-list');
 
 const getSavedData = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -54,19 +56,24 @@ const calculateTotal = (data) => {
 const renderForm = () => {
   const data = getSavedData();
 
-  form.innerHTML = denominations.map(({ label, value }) => `
+  form.innerHTML = denominations.map(({ label, value }) => {
+    const currentValue = Number(data[value] || 0);
+    const inputValue = currentValue === 0 ? '' : currentValue;
+
+    return `
     <label class="denomination">
       <span>${label}</span>
       <input
         type="number"
         min="0"
         step="1"
-        value="${data[value] || 0}"
+        value="${inputValue}"
         data-value="${value}"
         aria-label="Quantidade de cédulas ou moedas de ${label}"
       >
     </label>
-  `).join('');
+  `;
+  }).join('');
 };
 
 const updateSummary = () => {
@@ -78,6 +85,79 @@ const updateSummary = () => {
   titheValueElement.textContent = formatCurrency(tithe);
 };
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date);
+};
+
+const getHistory = () => {
+  const saved = localStorage.getItem(HISTORY_KEY);
+
+  if (!saved) return [];
+
+  try {
+    return JSON.parse(saved);
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveHistoryEntry = (values) => {
+  const total = calculateTotal(values);
+  const tithe = total * 0.1;
+  const history = getHistory();
+
+  const entry = {
+    id: Date.now(),
+    createdAt: new Date().toISOString(),
+    values,
+    total,
+    tithe
+  };
+
+  const updatedHistory = [entry, ...history].slice(0, 5);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(updatedHistory));
+  renderHistory();
+};
+
+const renderHistory = () => {
+  const history = getHistory();
+
+  if (!history.length) {
+    historyList.innerHTML = '<p class="empty-history">Nenhum valor salvo ainda.</p>';
+    return;
+  }
+
+  historyList.innerHTML = history.map((entry) => `
+    <div class="history-item">
+      <div class="history-meta">
+        <span class="history-date">${formatDate(entry.createdAt)}</span>
+        <span class="history-values">Total: ${formatCurrency(entry.total)} • Dízimo: ${formatCurrency(entry.tithe)}</span>
+      </div>
+      <button class="history-btn" type="button" data-history-id="${entry.id}">Usar valor</button>
+    </div>
+  `).join('');
+
+  historyList.querySelectorAll('.history-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const entryId = Number(button.dataset.historyId);
+      const selected = getHistory().find((item) => item.id === entryId);
+
+      if (!selected) return;
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(selected.values));
+      renderForm();
+      updateSummary();
+    });
+  });
+};
+
 const saveCurrentValues = () => {
   const values = {};
 
@@ -87,6 +167,7 @@ const saveCurrentValues = () => {
   });
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+  saveHistoryEntry(values);
   updateSummary();
 };
 
@@ -132,3 +213,4 @@ clearBtn.addEventListener('click', () => {
 
 renderForm();
 updateSummary();
+renderHistory();

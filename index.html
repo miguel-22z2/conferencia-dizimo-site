@@ -10,10 +10,10 @@
     <main class="container">
         <header class="page-header">
             <div class="title-wrap">
-                <h1>Conferência de Dízimo - Santa Luzia</h1>
-                <p class="subtitle">Digite a quantidade de notas e moedas para calcular o valor do dizimo.</p>
+                <h1>Conferência de Dízimo</h1>
+                <p class="subtitle">Informe as notas e moedas para calcular o valor do seu dízimo.</p>
             </div>
-            <button id="clear-btn" class="clear-btn" type="button">Limpar</button>
+            <button id="clear-btn" class="clear-btn" type="button" title="Limpa os valores digitados">Limpar</button>
         </header>
 
         <section class="summary" aria-label="Resumo do valor total">
@@ -38,9 +38,14 @@
             <aside class="side-panel">
                 <div class="info-box">
                     <h3>Como funciona</h3>
-                    <p>Informe a quantidade de cada nota ou moeda que você tem. O valor total será calculado automaticamente e o dízimo será exibido em 10%.</p>
+                    <p>Digite a quantidade de cada nota ou moeda que você possui. O sistema soma automaticamente o valor total e calcula o dízimo sugerido em 10%.</p>
                 </div>
             </aside>
+        </section>
+
+        <section class="history-panel panel" aria-label="Consulta de valores salvos">
+            <h2>Consulta de valores</h2>
+            <div id="history-list" class="history-list"></div>
         </section>
     </main>
 
